@@ -11,13 +11,13 @@ from Common.DataConversion import DataConversion
 from Common.SQL_Language import (prepareData, prepareValData, tensorFromSentence,tensorsFromPair)
 
 
-from baseline.model.decoder import AttnDecoderRNN, DecoderRNN
-from baseline.model.encoder import EncoderRNN
+from Encoder_Decoder.Decoder import AttnDecoderRNN, DecoderRNN
+from Encoder_Decoder.Encoder import EncoderRNN
 
 
-def run_baseline():
+def run_train_model():
     hidden_size = 256
-    x = DataConversionUtil()
+    x = DataConversion()
     lr_best = hyperparam(hidden_size)
 
     global input_lang

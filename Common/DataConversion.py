@@ -7,7 +7,7 @@ import records
 from Common.SQL_Query import SQL_Query
 
 
-class DataConversionUtil:
+class DataConversion:
     """Class is responsible for converting all the sql structured output to plain text sql queries"""
 
     def __init__(self):
