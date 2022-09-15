@@ -1,8 +1,9 @@
 from __future__ import unicode_literals, print_function, division
 
-import nltk
+# import nltk
+
 import pandas as pd
-import records
+#import records
 
 from Common.SQL_Query import SQL_Query
 
