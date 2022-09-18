@@ -1,4 +1,4 @@
-import records
+from numpy.core import records
 import re
 from babel.numbers import parse_number, parse_decimal, format_number, NumberFormatError
 
