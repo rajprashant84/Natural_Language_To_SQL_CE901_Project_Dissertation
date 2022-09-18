@@ -1,15 +1,15 @@
-import re
-from tabulate import tabulate
-from common_utility import de_tokenize
-from copy import deepcopy
+from Common.common_utility import  de_tokenize
 from collections import defaultdict
+from copy import deepcopy
+import re
 
 re_whitespace = re.compile(r'\s+', flags=re.UNICODE)
+
+
 class SQL_Query:
     Agg_Command = ['SUM', 'MIN', 'MAX', 'COUNT', 'AVG', '']
     Conditional_Command = ['<', '>', '=', ]
-    Syntax = ['SELECT', 'WHERE', 'AND', 'OR', 'COL', 'TABLE', 'CAPTION', 'PAGE', 'SECTION', 'OP', 'COND', 'QUESTION'
-        , 'AGG', 'AGGOPS', 'CONDOPS']
+    Syntax = ['SELECT', 'WHERE', 'AND', 'OR', 'COL', 'TABLE', 'CAPTION', 'PAGE', 'SECTION', 'OP', 'COND', 'QUESTION', 'AGG', 'AGGOPS', 'CONDOPS']
 
     def __init__(self, select_index, agg_index, conditions=tuple(), ordered=False):
         self.select_index = select_index
@@ -40,11 +40,12 @@ class SQL_Query:
 
     def __repr__(self):
         rep = 'SELECT {agg} {sel} FROM table'.format(agg=self.agg_ops[self.agg_index],
-                                                     sel='col{}'.format(self.select_index),)
+                                                     sel='col{}'.format(self.select_index), )
         if self.conditions:
             rep += ' WHERE ' + ' AND '.join(
                 ['{} {} {}'.format('col{}'.format(i), self.cond_ops[o], v) for i, o, v in self.conditions])
         return rep
+
     def to_dict(self):
         return {'sel': self.sel_index, 'agg': self.agg_index, 'conds': self.conditions}
 
