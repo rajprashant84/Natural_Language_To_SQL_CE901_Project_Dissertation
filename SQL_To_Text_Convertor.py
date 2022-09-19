@@ -4,7 +4,7 @@ import pandas as pd
 import nltk
 #import records
 from Common.SQL_Query import SQL_Query
-from Common.table import table
+#from Common.SQL_table import table
 
 
 
