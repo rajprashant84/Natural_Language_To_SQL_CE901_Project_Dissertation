@@ -4,7 +4,7 @@ from collections import defaultdict
 from io import open
 import unicodedata
 import torch
-from common_utility import *
+from Common.common_utility import *
 import nltk
 import pandas as pd
 
