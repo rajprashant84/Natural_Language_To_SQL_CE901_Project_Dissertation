@@ -7,12 +7,14 @@ import torch.nn as nn
 from torch import optim
 from Common.common_utility import *
 from Common.DataConversion import DataConversion
-#from Common.graph_plotter import showPlot
-from Common.SQL_Language import (prepareData, prepareValData, tensorFromSentence,tensorsFromPair)
-
+# from Common.graph_plotter import showPlot
+from Common.SQL_Language import (prepareData, prepareValData, tensorFromSentence, tensorsFromPair)
 
 from Encoder_Decoder.Decoder import AttnDecoderRNN, DecoderRNN
 from Encoder_Decoder.Encoder import EncoderRNN
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer,
           criterion, max_length=MAX_LENGTH):
@@ -66,8 +68,8 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
 
     return loss.item() / target_length
 
-def hyperparam(hidden_size):
 
+def hyperparam(hidden_size):
     global input_lang
     global output_lang
     global pairs
@@ -79,9 +81,10 @@ def hyperparam(hidden_size):
     best_lr = 0
     for l in lr:
         print("Searching for best params...")
-        trainIters(encoder1, attn_decoder1, 250000, print_every=1000, plot_every=1000,learning_rate=l) #Change number of iter
-        accuracy = evaluateRandomly(encoder1,attn_decoder1, n=10)
-        if(accuracy > high):
+        trainIters(encoder1, attn_decoder1, 250000, print_every=1000, plot_every=1000,
+                   learning_rate=l)  # Change number of iter
+        accuracy = evaluateRandomly(encoder1, attn_decoder1, n=10)
+        if (accuracy > high):
             best_lr = l
     return best_lr
 
@@ -116,7 +119,7 @@ def trainIters(encoder, decoder, n_iters, print_every=10, plot_every=20, learnin
             plot_losses.append(plot_loss_avg)
             plot_loss_total = 0
 
-    showPlot(plot_losses, "Baseline loss")
+    # showPlot(plot_losses, "Baseline loss")
 
 
 def evaluate(encoder, decoder, sentence, max_length=MAX_LENGTH):
@@ -168,6 +171,7 @@ def evaluateRandomly(encoder, decoder, n=1000):
     print("\n\nCorrect Examples : {} out of {}".format(correct, n))
     return correct / n * 100
 
+
 def run_train_model():
     hidden_size = 256
     x = DataConversion()
@@ -180,10 +184,10 @@ def run_train_model():
     encoder1 = EncoderRNN(input_lang.n_words, hidden_size).to(device)
     decoder1 = DecoderRNN(hidden_size, output_lang.n_words).to(device)
     attn_decoder1 = AttnDecoderRNN(hidden_size, output_lang.n_words, dropout_p=0.1).to(device)
-    trainIters(encoder1, attn_decoder1, 250000, print_every=1000, plot_every=1000 ,learning_rate=lr_best)
+    trainIters(encoder1, attn_decoder1, 250000, print_every=1000, plot_every=1000, learning_rate=lr_best)
     acc = evaluateRandomly(encoder1, attn_decoder1, n=1000)
     print("Accuracy achieved:", acc)
 
 
 if __name__ == '__main__':
-    run_baseline()
+    run_train_model()
