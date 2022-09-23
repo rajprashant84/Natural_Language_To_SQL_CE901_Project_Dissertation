@@ -35,7 +35,7 @@ class SQL_Language:
 
 def readLangs(lang1, lang2):
     print("Reading lines...")
-
+    path =""
     lines = pd.read_json("data/tokenized_train.jsonl", lines=True)
 
     # Split every line into pairs and normalize
