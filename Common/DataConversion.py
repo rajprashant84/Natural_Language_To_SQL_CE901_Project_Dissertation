@@ -13,7 +13,7 @@ class DataConversion:
 
     def build_table_mapping(self, dataset):
         """Reads the tables file and creates a dictionary with table id as key and all other data as value"""
-        tables = pd.read_json("data/" + dataset + ".tables.jsonl", lines=True)
+        tables = pd.read_json("WikiSQL_DataSet/" + dataset + ".tables.jsonl", lines=True)
         data = pd.DataFrame()
         for index, line in tables.iterrows():
             self.table_map[line["id"]] = line
@@ -23,7 +23,7 @@ class DataConversion:
             line_df = pd.DataFrame(line)
             line_df = line_df.transpose()
             data = data.append(line_df)
-        self.save_dataframe(data, "data/tokenized_" + dataset + ".tables.jsonl")
+        self.save_dataframe(data, "WikiSQL_DataSet/tokenized_" + dataset + ".tables.jsonl")
 
     def get_query_from_json(self, json_line):
         """Returns a Query object for the json input and returns the table object as well"""
@@ -36,7 +36,7 @@ class DataConversion:
     @staticmethod
     def execute_query(table, query):
         """Executes a query on the sqlite training db. Only for testing purposes"""
-        db = records.Database('sqlite:///../data/train.db')
+        db = records.Database('sqlite:///../WikiSQL_DataSet/train.db')
         conn = db.get_connection()
         query, result = table.execute_query(conn, query)
         conn.close()
@@ -63,7 +63,7 @@ class DataConversion:
     def build_tokenized_dataset(self, dataset):
         """Reads the input training files and generates a new file containing plain text sql queries"""
         self.build_table_mapping(dataset)
-        queries = pd.read_json("data/" + dataset + ".jsonl", lines=True)
+        queries = pd.read_json("WikiSQL_DataSet/" + dataset + ".jsonl", lines=True)
 
         count = 0
         stop_limit = len(queries)
@@ -98,4 +98,4 @@ class DataConversion:
                 break
 
         # Save dataframe to file
-        self.save_dataframe(data, "data/tokenized_" + dataset + ".jsonl")
+        self.save_dataframe(data, "WikiSQL_DataSet/tokenized_" + dataset + ".jsonl")

@@ -1,10 +1,12 @@
 import numpy as np
 import pandas as pd
 import json
-#from library.dbengine import DBEngine
+
+# from library.dbengine import DBEngine
 
 
-path ='/Users/prashantraj/Documents/Natural_Language_To_SQL_CE901_Project_Dissertation/WikiSQL_DataSet'
+path = '/Users/prashantraj/Documents/Natural_Language_To_SQL_CE901_Project_Dissertation/WikiSQL_DataSet'
+
 
 def load_dataset(dataset_to_load):
     """Load the given dataset into memory."""
@@ -31,5 +33,5 @@ def load_dataset(dataset_to_load):
 
 
 if __name__ == '__main__':
-    sql_data, table_data, TRAIN_DB =load_dataset('dev')
+    sql_data, table_data, TRAIN_DB = load_dataset('dev')
     print(TRAIN_DB)
