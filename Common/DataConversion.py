@@ -13,8 +13,11 @@ class DataConversion:
 
     def build_table_mapping(self, dataset):
         """Reads the tables file and creates a dictionary with table id as key and all other data as value"""
+        print(dataset)
         tables = pd.read_json("WikiSQL_DataSet/" + dataset + ".tables.jsonl", lines=True)
+        print(tables)
         data = pd.DataFrame()
+        print(data)
         for index, line in tables.iterrows():
             self.table_map[line["id"]] = line
             line["tokenized_header"] = []
@@ -63,8 +66,9 @@ class DataConversion:
     def build_tokenized_dataset(self, dataset):
         """Reads the input training files and generates a new file containing plain text sql queries"""
         self.build_table_mapping(dataset)
+        print(dataset)
         queries = pd.read_json("WikiSQL_DataSet/" + dataset + ".jsonl", lines=True)
-
+        print(queries)
         count = 0
         stop_limit = len(queries)
         data = pd.DataFrame()

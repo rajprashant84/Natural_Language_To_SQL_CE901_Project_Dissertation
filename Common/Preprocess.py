@@ -1,6 +1,5 @@
 from Common.DataConversion import DataConversion
 
-
 # Create a tokenized dataset for the train, test and validation datasets
 # Enables model to run faster during actual training since all data is already
 # preprocessed
