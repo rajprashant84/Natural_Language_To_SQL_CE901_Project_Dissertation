@@ -4,6 +4,11 @@ from numpy.core import records
 from Common.SQL_Query import SQL_Query
 import pandas as pd
 import nltk
+import json
+import warnings
+
+warnings.filterwarnings('ignore')
+
 
 class DataConversion:
     """Class is responsible for converting all the sql structured output to plain text sql queries"""
@@ -13,11 +18,14 @@ class DataConversion:
 
     def build_table_mapping(self, dataset):
         """Reads the tables file and creates a dictionary with table id as key and all other data as value"""
-        print(dataset)
-        tables = pd.read_json("WikiSQL_DataSet/" + dataset + ".tables.jsonl", lines=True)
-        print(tables)
-        data = pd.DataFrame()
-        print(data)
+        #print(dataset)
+
+        tables = pd.read_json('../WikiSQL_DataSet/' + dataset + '.tables.jsonl', lines=True)
+
+        #print(tables)
+
+        data = pd.DataFrame(tables)
+        #print(data)
         for index, line in tables.iterrows():
             self.table_map[line["id"]] = line
             line["tokenized_header"] = []
@@ -26,7 +34,7 @@ class DataConversion:
             line_df = pd.DataFrame(line)
             line_df = line_df.transpose()
             data = data.append(line_df)
-        self.save_dataframe(data, "WikiSQL_DataSet/tokenized_" + dataset + ".tables.jsonl")
+        self.save_dataframe(data, "../WikiSQL_DataSet/tokenized_" + dataset + ".tables.jsonl")
 
     def get_query_from_json(self, json_line):
         """Returns a Query object for the json input and returns the table object as well"""
@@ -67,7 +75,7 @@ class DataConversion:
         """Reads the input training files and generates a new file containing plain text sql queries"""
         self.build_table_mapping(dataset)
         print(dataset)
-        queries = pd.read_json("WikiSQL_DataSet/" + dataset + ".jsonl", lines=True)
+        queries = pd.read_json("../WikiSQL_DataSet/" + dataset + ".jsonl", lines=True)
         print(queries)
         count = 0
         stop_limit = len(queries)
@@ -102,4 +110,4 @@ class DataConversion:
                 break
 
         # Save dataframe to file
-        self.save_dataframe(data, "WikiSQL_DataSet/tokenized_" + dataset + ".jsonl")
+        self.save_dataframe(data, "../WikiSQL_DataSet/tokenized_" + dataset + ".jsonl")

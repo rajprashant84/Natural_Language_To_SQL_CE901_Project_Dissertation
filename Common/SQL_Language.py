@@ -35,8 +35,8 @@ class SQL_Language:
 
 def readLangs(lang1, lang2):
     print("Reading lines...")
-    path =""
-    lines = pd.read_json("data/tokenized_train.jsonl", lines=True)
+
+    lines = pd.read_json("../WikiSQL_DataSet/tokenized_train.jsonl", lines=True)
 
     # Split every line into pairs and normalize
     pairs = []
@@ -68,7 +68,7 @@ def prepareValData(lang1, lang2):
 def readLangs_val(lang1, lang2):
     print("Reading lines...")
 
-    lines = pd.read_json("data/tokenized_dev.jsonl", lines=True)
+    lines = pd.read_json("../WikiSQL_DataSet/tokenized_dev.jsonl", lines=True)
 
     # Split every line into pairs and normalize
     pairs = []

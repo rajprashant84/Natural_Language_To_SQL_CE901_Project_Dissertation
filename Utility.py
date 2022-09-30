@@ -8,6 +8,16 @@ import json
 path = '/Users/prashantraj/Documents/Natural_Language_To_SQL_CE901_Project_Dissertation/WikiSQL_DataSet'
 
 
+def build_table_mapping(dataset):
+    """Reads the tables file and creates a dictionary with table id as key and all other data as value"""
+    print(dataset)
+    tables = pd.read_json("WikiSQL_DataSet/" + dataset + ".tables.jsonl", lines=True)
+    print(tables)
+    data = pd.DataFrame()
+    print(data)
+    return data
+
+
 def load_dataset(dataset_to_load):
     """Load the given dataset into memory."""
     print("Loading dataset : ", dataset_to_load)
@@ -33,5 +43,5 @@ def load_dataset(dataset_to_load):
 
 
 if __name__ == '__main__':
-    sql_data, table_data, TRAIN_DB = load_dataset('dev')
-    print(TRAIN_DB)
+     sql_data, table_data, TRAIN_DB = load_dataset('train')
+     print(table_data)
