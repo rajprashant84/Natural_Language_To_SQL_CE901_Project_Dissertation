@@ -39,25 +39,25 @@ class SQL_Query:
         return hash(tuple(sorted(self.__dict__.items())))
 
     def __repr__(self):
-        rep = 'SELECT {agg} {sel} FROM table'.format(agg=self.agg_ops[self.agg_index],
+        rep = 'SELECT {agg} {sel} FROM table'.format(agg=self.Agg_Command[self.agg_index],
                                                      sel='col{}'.format(self.select_index), )
         if self.conditions:
             rep += ' WHERE ' + ' AND '.join(
-                ['{} {} {}'.format('col{}'.format(i), self.cond_ops[o], v) for i, o, v in self.conditions])
+                ['{} {} {}'.format('col{}'.format(i), self.Conditional_Command[o], v) for i, o, v in self.conditions])
         return rep
 
     def to_dict(self):
-        return {'sel': self.sel_index, 'agg': self.agg_index, 'conds': self.conditions}
+        return {'sel': self.select_index, 'agg': self.agg_index, 'conds': self.conditions}
 
     def lower(self):
         conds = []
         for col, op, cond in self.conditions:
             conds.append([col, op, cond.lower()])
-        return self.__class__(self.sel_index, self.agg_index, conds)
+        return self.__class__(self.select_index, self.agg_index, conds)
 
     @classmethod
     def from_dict(cls, d, ordered=False):
-        return cls(sel_index=d['sel'], agg_index=d['agg'], conditions=d['conds'], ordered=ordered)
+        return cls(select_index=d['sel'], agg_index=d['agg'], conditions=d['conds'], ordered=ordered)
 
     @classmethod
     def from_tokenized_dict(cls, d):
@@ -108,7 +108,7 @@ class SQL_Query:
             if 'symcol' != terms.pop(0)['word']:
                 raise Exception('Missing aggregation column')
         try:
-            agg_op = cls.agg_ops.index(agg_op.upper())
+            agg_op = cls.Agg_Command.index(agg_op.upper())
         except Exception as e:
             raise Exception('Invalid agg op {}'.format(agg_op))
 
@@ -146,7 +146,7 @@ class SQL_Query:
                 raise Exception('Missing conditional operator {}'.format(flat['words']))
             cond_op = where_terms[op_index + 1]['word']
             try:
-                cond_op = cls.cond_ops.index(cond_op.upper())
+                cond_op = cls.Agg_Command.index(cond_op.upper())
             except Exception as e:
                 raise Exception('Invalid cond op {}'.format(cond_op))
             try:
@@ -215,7 +215,7 @@ class SQL_Query:
                 raise Exception('Missing conditional operator {}'.format(flat['words']))
             cond_op = where_terms[op_index + 1]['word']
             try:
-                cond_op = cls.cond_ops.index(cond_op.upper())
+                cond_op = cls.Conditional_Command.index(cond_op.upper())
             except Exception as e:
                 raise Exception('Invalid cond op {}'.format(cond_op))
             try:

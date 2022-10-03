@@ -76,11 +76,11 @@ class DataConversion:
         self.build_table_mapping(dataset)
         print(dataset)
         queries = pd.read_json("../WikiSQL_DataSet/" + dataset + ".jsonl", lines=True)
-        print(queries)
+        #print(queries)
         count = 0
         stop_limit = len(queries)
         data = pd.DataFrame()
-
+        print(data)
         # stop_limit = 10
         # iterate over the queries and convert each one to plain text sql
         for index, line in queries.iterrows():
