@@ -94,12 +94,12 @@ class SQL_table:
                                db.query(query_str, **where_map)]
 
     def query_str(self, query):
-        agg_str = self.header[query.sel_index]
-        agg_op = SQL_Query.agg_ops[query.agg_index]
+        agg_str = self.header[query.select_index]
+        agg_op = SQL_Query.Agg_Command[query.agg_index]
         if agg_op:
             agg_str = '{}({})'.format(agg_op, agg_str)
         where_str = ' AND '.join(
-            ['{} {} {}'.format(self.header[i], SQL_Query.cond_ops[o], v) for i, o, v in query.conditions])
+            ['{} {} {}'.format(self.header[i], SQL_Query.Conditional_Command[o], v) for i, o, v in query.conditions])
         return 'SELECT {} FROM {} WHERE {}'.format(agg_str, self.name, where_str)
 
     def generate_query(self, db, max_cond=4):
@@ -107,7 +107,7 @@ class SQL_table:
         # sample a select column
         sel_index = random.choice(list(range(len(self.header))))
         # sample where conditions
-        query = SQL_Query(-1, SQL_Query.agg_ops.index(''))
+        query = SQL_Query(-1, SQL_Query.Agg_Command.index(''))
         results = self.execute_query(db, query)
         condition_options = list(range(len(self.header)))
         condition_options.remove(sel_index)
@@ -116,9 +116,9 @@ class SQL_table:
                 break
             cond_index = random.choice(condition_options)
             if self.types[cond_index] == 'text':
-                cond_op = SQL_Query.cond_ops.index('=')
+                cond_op = SQL_Query.Conditional_Command.index('=')
             else:
-                cond_op = random.choice(list(range(len(Query.cond_ops))))
+                cond_op = random.choice(list(range(len(SQL_Query.Conditional_Command))))
             cond_val = random.choice([r[cond_index] for r in results])
             query.conditions.append((cond_index, cond_op, cond_val))
             new_results = self.execute_query(db, query)
@@ -129,9 +129,9 @@ class SQL_table:
                 query.conditions.pop()
         # sample an aggregation operation
         if self.types[sel_index] == 'text':
-            query.agg_index = SQL_Query.agg_ops.index('')
+            query.agg_index = SQL_Query.Agg_Command.index('')
         else:
-            query.agg_index = random.choice(list(range(len(SQL_Query.agg_ops))))
+            query.agg_index = random.choice(list(range(len(SQL_Query.Agg_Command))))
         query.sel_index = sel_index
         results = self.execute_query(db, query)
         return query, results

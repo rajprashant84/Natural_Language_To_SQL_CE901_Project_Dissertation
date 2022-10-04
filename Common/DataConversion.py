@@ -2,6 +2,7 @@ from __future__ import unicode_literals, print_function, division
 
 from numpy.core import records
 from Common.SQL_Query import SQL_Query
+from Common.table import SQL_table
 import pandas as pd
 import nltk
 import json
@@ -41,7 +42,7 @@ class DataConversion:
         q = SQL_Query.from_dict(json_line["sql"])
         t_id = json_line["table_id"]
         table = self.table_map[t_id]
-        t = table("", table["header"], table["types"], table["rows"])
+        t = SQL_table("", table["header"], table["types"], table["rows"])
         return t, q
 
     @staticmethod
@@ -71,16 +72,15 @@ class DataConversion:
     def save_dataframe(data, filename):
         data.to_json(filename, orient='records', lines=True)
 
-    def build_tokenized_dataset(self, dataset):
+    def tokenized_dataset(self, dataset):
         """Reads the input training files and generates a new file containing plain text sql queries"""
         self.build_table_mapping(dataset)
         print(dataset)
         queries = pd.read_json("../WikiSQL_DataSet/" + dataset + ".jsonl", lines=True)
-        #print(queries)
         count = 0
         stop_limit = len(queries)
         data = pd.DataFrame()
-        print(data)
+        #print(data)
         # stop_limit = 10
         # iterate over the queries and convert each one to plain text sql
         for index, line in queries.iterrows():

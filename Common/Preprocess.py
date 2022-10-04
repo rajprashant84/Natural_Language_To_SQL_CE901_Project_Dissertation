@@ -5,9 +5,9 @@ from Common.DataConversion import DataConversion
 # preprocessed
 data_converter = DataConversion()
 print("train Start")
-data_converter.build_tokenized_dataset("train")
+data_converter.tokenized_dataset("train")
 print("dev Start")
-data_converter.build_tokenized_dataset("dev")
+data_converter.tokenized_dataset("dev")
 print("dev test")
-data_converter.build_tokenized_dataset("test")
+data_converter.tokenized_dataset("test")
 print("End")
