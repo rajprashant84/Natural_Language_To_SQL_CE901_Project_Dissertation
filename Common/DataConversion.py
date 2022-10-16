@@ -23,7 +23,7 @@ class DataConversion:
 
         tables = pd.read_json('../WikiSQL_DataSet/' + dataset + '.tables.jsonl', lines=True)
 
-        #print(tables)
+        print(tables.head().to_string())
 
         data = pd.DataFrame(tables)
         #print(data)

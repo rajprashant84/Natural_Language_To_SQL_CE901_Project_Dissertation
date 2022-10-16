@@ -119,7 +119,7 @@ def trainIters(encoder, decoder, n_iters, print_every=10, plot_every=20, learnin
             plot_losses.append(plot_loss_avg)
             plot_loss_total = 0
 
-    # showPlot(plot_losses, "Baseline loss")
+     #showPlot(plot_losses, "Baseline loss")
 
 
 def evaluate(encoder, decoder, sentence, max_length=MAX_LENGTH):
@@ -181,10 +181,15 @@ def run_train_model():
     global output_lang
     global pairs
     input_lang, output_lang, pairs = prepareData("en", "sql")
+    print("prepareData done")
     encoder1 = EncoderRNN(input_lang.n_words, hidden_size).to(device)
+    print("EncoderRNN done")
     decoder1 = DecoderRNN(hidden_size, output_lang.n_words).to(device)
+    print("DecoderRNN done")
     attn_decoder1 = AttnDecoderRNN(hidden_size, output_lang.n_words, dropout_p=0.1).to(device)
+    print("AttnDecoderRNN done")
     trainIters(encoder1, attn_decoder1, 250000, print_every=1000, plot_every=1000, learning_rate=lr_best)
+    print("trainIters done")
     acc = evaluateRandomly(encoder1, attn_decoder1, n=1000)
     print("Accuracy achieved:", acc)
 

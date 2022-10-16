@@ -10,6 +10,7 @@ import pandas as pd
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+print(device)
 
 class SQL_Language:
     def __init__(self, name):
@@ -34,10 +35,10 @@ class SQL_Language:
 
 
 def readLangs(lang1, lang2):
-    print("Reading lines...")
+    print("Start Reading lines...")
 
     lines = pd.read_json("../WikiSQL_DataSet/tokenized_train.jsonl", lines=True)
-
+    print(lines.head(10).to_string())
     # Split every line into pairs and normalize
     pairs = []
     for idx, row in lines.iterrows():
@@ -68,8 +69,8 @@ def prepareValData(lang1, lang2):
 def readLangs_val(lang1, lang2):
     print("Reading lines...")
 
-    lines = pd.read_json("../WikiSQL_DataSet/tokenized_dev.jsonl", lines=True)
-
+    lines = pd.read_json("WikiSQL_DataSet/tokenized_dev.jsonl", lines=True)
+    print(lines.head(5).to_string())
     # Split every line into pairs and normalize
     pairs = []
     for idx, row in lines.iterrows():
